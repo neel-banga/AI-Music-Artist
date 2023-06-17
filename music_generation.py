@@ -1,7 +1,6 @@
 from random import choices, randrange, randint
 import music
-import csv
-from typing import List, Tuple
+from typing import List
 from fitness import *
 
 def generate_genome(length):
@@ -45,7 +44,7 @@ def evolve(fitness_limit=10, generation_limit = 100):
     for i in range(generation_limit):
         print(f'Generation {i}')
 
-        fitness_scores = [deep_fitness(genome) for genome in population]
+        fitness_scores = [manual_fitness(genome) for genome in population]
 
         sorted_population = sorted(population, key=lambda x: fitness_scores[population.index(x)], reverse=True) 
         
@@ -68,4 +67,6 @@ def evolve(fitness_limit=10, generation_limit = 100):
 
     return population
 
-evolve()
+if __name__ == '__main__':
+    a = evolve()
+    music.play_music(a[0])

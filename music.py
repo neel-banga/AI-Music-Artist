@@ -1,9 +1,8 @@
-from random import randrange
 from midiutil import MIDIFile
 import os
 import subprocess
-import wave
-import pyaudio
+import subprocess
+import pygame
 
 # Define Constants
 
@@ -14,7 +13,7 @@ duration = 0.3 # Will later be changed by AI
 tempo    = 60 # Will later be changed by AI
 volume   = 100
 
-END_NOTE_NUM = 60 # expirementing with other vals like 12 n then *10
+END_NOTE_NUM = 112 # expirementing with other vals like 12 n then *10
 
 def convert_to_wav(filename):
     if os.path.isfile(filename):
@@ -22,7 +21,6 @@ def convert_to_wav(filename):
       # This command will convert the file to wav, the ">/dev/null 2>&1" part simply hides the output
       command = f'ffmpeg -i {filename} {new_file} >/dev/null 2>&1'
       subprocess.run(command, shell=True, input='y\n', text=True)
-      os.remove(filename)
 
 def create_music(notes):
 
@@ -46,24 +44,15 @@ def create_music(notes):
 
     convert_to_wav(full_file)
 
-def play_music(path = 'music.wav'):
-    wav_file = wave.open(path, 'rb')
-    audio = pyaudio.PyAudio()
+def listen_midi(midi = 'music.mid'):
 
-    stream = audio.open(format=audio.get_format_from_width(wav_file.getsampwidth()),
-                        channels=wav_file.getnchannels(),
-                        rate=wav_file.getframerate(),
-                        output=True)
+  pygame.init()
+  pygame.mixer.music.load(midi)
+  pygame.mixer.music.play()
+  while pygame.mixer.music.get_busy():
+    pygame.time.Clock().tick(10)
+  return "Music's over"
 
-    chunk_size = 1024
-    data = wav_file.readframes(chunk_size)
-
-    while data:
-        stream.write(data)
-        data = wav_file.readframes(chunk_size)
-
-    stream.stop_stream()
-    stream.close()
-    audio.terminate()
-
-    wav_file.close()
+def play_music(genome):
+    create_music(genome)
+    listen_midi()

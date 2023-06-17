@@ -1,6 +1,6 @@
 # Create function with logisitic regression now! - start by importing then do it custom! or start custom?!
 
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression
 import csv
 from ast import literal_eval
 from typing import List
@@ -25,7 +25,7 @@ def extract_data_csv(filename):
     return data, labels
 
 def create_logistic_regression(data, labels):
-    model = LogisticRegression()
+    model = LinearRegression()
     model.fit(data, labels)
     return model
 
@@ -39,9 +39,9 @@ def handle_string_labels(labels):
     return [int(i) for i in labels]
 
 def manual_fitness(genome: List[int]):
-    music.create_music(genome)
+    music.play_music(genome)
     score = int(input('Rate This Song On A Scale Of 1-10: '))
-    append_CSV([[genome, score]], 'fitness_data.csv')
+    append_CSV([[genome, score]], 'midi_fitness_data.csv')
     return score
 
 def deep_fitness(genome: List[int]):
