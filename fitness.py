@@ -46,7 +46,7 @@ def manual_fitness(genome: List[int]):
 
 def deep_fitness(genome: List[int]):
     music.create_music(genome)
-    data, labels = extract_data_csv('fitness_data.csv')
+    data, labels = extract_data_csv('midi_fitness_data.csv')
     data = handle_string_data(data)
     labels = handle_string_labels(labels)
     model = create_logistic_regression(data, labels)

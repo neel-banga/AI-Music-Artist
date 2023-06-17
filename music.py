@@ -3,6 +3,7 @@ import os
 import subprocess
 import subprocess
 import pygame
+import mido
 
 # Define Constants
 
@@ -40,9 +41,9 @@ def create_music(notes):
     with open("music.mid", "wb") as output_file:
         music.writeFile(output_file)
 
-    full_file = os.path.join(os.getcwd(), output_file.name)
+    #full_file = os.path.join(os.getcwd(), output_file.name)
 
-    convert_to_wav(full_file)
+    #convert_to_wav(full_file)
 
 def listen_midi(midi = 'music.mid'):
 
@@ -53,6 +54,30 @@ def listen_midi(midi = 'music.mid'):
     pygame.time.Clock().tick(10)
   return "Music's over"
 
+def play_midi_file(midi_file = 'music.mid'):
+    try:
+        mid = mido.MidiFile(midi_file)
+
+        for message in mid.play():
+            if message.type == 'note_on':
+                # Handle note_on messages, e.g., send them to a synthesizer or sound card
+                print(f"Note On: {message.note}")
+            elif message.type == 'note_off':
+                # Handle note_off messages, e.g., stop playing the note
+                print(f"Note Off: {message.note}")
+            else:
+                # Handle other MIDI messages as needed
+                print(f"MIDI Message: {message}")
+
+            time.sleep(message.time)
+
+    except FileNotFoundError:
+        print(f"File '{midi_file}' not found.")
+    except mido.MidiFileError as e:
+        print(f"Error loading MIDI file: {e}")
+
 def play_music(genome):
     create_music(genome)
     listen_midi()
+
+play_music([108, 79, 107, 96, 34, 93, 27, 2, 46, 89, 71, 104, 78, 79, 103, 21, 73, 98, 17, 107])

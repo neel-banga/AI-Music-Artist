@@ -37,14 +37,14 @@ def mutation(genome: List[int], mutations_amt: int, probability=0.4) -> List[int
              
     return genome
 
-def evolve(fitness_limit=10, generation_limit = 100):
+def evolve(fitness_limit=15, generation_limit = 100):
 
     population = generate_population(6, 20)
 
     for i in range(generation_limit):
         print(f'Generation {i}')
 
-        fitness_scores = [manual_fitness(genome) for genome in population]
+        fitness_scores = [deep_fitness(genome) for genome in population]
 
         sorted_population = sorted(population, key=lambda x: fitness_scores[population.index(x)], reverse=True) 
         
@@ -69,4 +69,6 @@ def evolve(fitness_limit=10, generation_limit = 100):
 
 if __name__ == '__main__':
     a = evolve()
-    music.play_music(a[0])
+    print(a)
+    music.create_music(a[0])
+    music.play_midi_file()
