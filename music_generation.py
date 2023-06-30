@@ -70,5 +70,4 @@ def evolve(fitness_limit=15, generation_limit = 100):
 if __name__ == '__main__':
     a = evolve()
     print(a)
-    music.create_music(a[0])
-    music.play_midi_file()
+    music.play_music(a[0])
